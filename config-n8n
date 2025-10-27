@@ -1,4 +1,4 @@
-# Variáveis de Ambiente - n8n
+## Variáveis de Ambiente - n8n no EasyPanel
 
 WEBHOOK_URL=https://$(PRIMARY_DOMAIN)
 N8N_HOST=$(PRIMARY_DOMAIN)
