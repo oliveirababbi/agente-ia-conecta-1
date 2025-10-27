@@ -111,6 +111,7 @@ Após o processamento, a automação simula ações humanas (marcar como lida, d
 Desenvolvido por **Barbara Oliveira (Babbi)**  
 > Projeto da **IA Connect** — Automação inteligente de atendimento via WhatsApp  
 > Hospedado via **Easypanel VPS**
+> Saiba mais: https://ia-connect.lovable.app/
 
 ---
 
