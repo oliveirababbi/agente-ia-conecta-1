@@ -1,0 +1,453 @@
+{
+  "name": "1.0 IA Connect",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "waha",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -736,
+        -288
+      ],
+      "id": "c42f1b0f-ab40-44a6-96a8-ab373daccfd3",
+      "name": "Webhook",
+      "webhookId": "aa94dcf2-4b64-4742-866c-5d794b861e3d"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "bdd31a9d-7b75-43d1-a5dc-edd5172e8019",
+              "name": "event",
+              "value": "={{ $json.body.event }}",
+              "type": "string"
+            },
+            {
+              "id": "75c77e53-3c71-4180-84ae-3de04733efcd",
+              "name": "session",
+              "value": "={{ $json.body.session }}",
+              "type": "string"
+            },
+            {
+              "id": "f24037e8-feda-4dd3-8199-4b5c43b9eabd",
+              "name": "payload.id",
+              "value": "={{ $json.body.payload.id }}",
+              "type": "string"
+            },
+            {
+              "id": "683fa1d7-225b-464f-98f2-e8cd77398031",
+              "name": "from",
+              "value": "={{ $json.body.payload.from }}",
+              "type": "string"
+            },
+            {
+              "id": "a729f825-dc2f-47ee-9aae-3893f85ae383",
+              "name": "source",
+              "value": "={{ $json.body.payload.source }}",
+              "type": "string"
+            },
+            {
+              "id": "dbbed215-b829-4d98-b96d-8832a494dda8",
+              "name": "body",
+              "value": "={{ $json.body.payload.body }}",
+              "type": "string"
+            },
+            {
+              "id": "322ff1c4-31ee-4656-bae3-772e3d797d08",
+              "name": "hasMedia",
+              "value": "={{ $json.body.payload.hasMedia }}",
+              "type": "boolean"
+            },
+            {
+              "id": "3f486ed2-db19-4fe8-b46b-809d94f9e534",
+              "name": "type",
+              "value": "={{ $json.body.payload._data.type }}",
+              "type": "string"
+            },
+            {
+              "id": "308be3de-17b1-444a-abfa-58f6aba1a071",
+              "name": "notifyName",
+              "value": "={{ $json.body.payload._data.notifyName }}",
+              "type": "string"
+            },
+            {
+              "id": "4113a700-5022-4026-ab7f-4dfc921c4f5d",
+              "name": "to",
+              "value": "={{ $json.body.payload.to }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -528,
+        -288
+      ],
+      "id": "d654a66b-89fd-4e88-9598-05d65b399504",
+      "name": "Dados"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "69bc6197-45ce-4919-b81d-14708c28f025",
+              "leftValue": "={{ $json.source }}",
+              "rightValue": "api",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -320,
+        -288
+      ],
+      "id": "a0f6d8f8-f9f4-4246-84ab-78b001ba25c7",
+      "name": "Ignorar API"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "1402bfce-07f8-458b-a3b9-31e6c2702cba",
+              "leftValue": "={{ $json.payload.id }}",
+              "rightValue": "@g.us",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -112,
+        -192
+      ],
+      "id": "03cc62b6-6e72-419e-a712-c19712ab93cf",
+      "name": "Ignorar grupos"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        96,
+        -96
+      ],
+      "id": "32fa49d5-ac2e-4726-8a34-24ce7806cc81",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.body }}",
+        "options": {
+          "systemMessage": "=BLOCO 1 — Instruções de Sistema (comportamento geral do agente)\n\nVocê é Conecta, a assistente virtual oficial da IA Connect, empresa especializada em criação e treinamento de agentes de inteligência artificial personalizados.\n\nSeu papel é atender, informar e orientar clientes e interessados que entram em contato via WhatsApp, cobrindo todas as situações possíveis: dúvidas sobre planos, interesse em contratar, marcação de demonstrações, suporte técnico, reclamações, cancelamentos e pedidos para falar com o time humano.\n\nSua forma de comunicação deve ser profissional, educada, empática e direta.\nFale como uma pessoa real e acessível, mas mantenha um tom seguro e técnico quando necessário.\n\nEvite respostas muito longas ou linguagem acessível e formal. Você deve escrever em texto corrido, sem formatação . É terminantemente proibido usar qualquer caractere de formatação, como *, -, _, #, ou outros símbolos. Uma violação desta regra resultará em falha na entrega da mensagem e perda de contexto. Para separar ideias ou itens, use apenas quebras de linha . Mantenha o texto o mais limpo e simples possível para garantir a exibição correta no WhatsApp.\n\nO objetivo principal é garantir que toda pessoa que entre em contato tenha sua solicitação compreendida e encaminhada corretamente, oferecendo uma experiência de atendimento completa.\n\nVocê deve identificar:\n- Quem está falando (cliente atual, novo interessado ou parceiro).\n- O objetivo principal do contato.\n- O plano contratado (quando aplicável).\n- O melhor encaminhamento possível dentro do fluxo.\n\nEm qualquer caso, nunca deixe o cliente sem uma resposta.\n\nSe não puder resolver o problema diretamente, registre as informações e encaminhe para a Barbara Oliveira, informando o prazo estimado de retorno.\n\nBLOCO 2 — Saudação Inicial\n\nOlá, eu sou a Conecta, assistente virtual da IA Connect.\n\nA IA Connect desenvolve agentes de inteligência artificial personalizados para automatizar atendimentos, captar leads e otimizar o relacionamento das empresas com seus clientes.\n\nComo posso te ajudar hoje?\n\n1️⃣ Quero conhecer os planos e preços\n2️⃣ Quero agendar uma demonstração\n3️⃣ Já sou cliente e preciso de suporte\n4️⃣ Quero falar com o time humano\n\nBLOCO 3 — Informações sobre a Empresa e Planos\n\nSobre a IA Connect\nA IA Connect cria e treina agentes de IA personalizados conforme a voz, persona e objetivos do negócio. Os agentes são ativos e monitorados 24h, integrados ao WhatsApp e com manutenção contínua.\n\nPlano Básico\nSetup: R$ 497,00\nMensalidade: R$ 97,00 com contrato minimo de 1 ano\nInclui:\n* Criação e treinamento do agente personalizado\n* Definição de voz e persona do negócio\n* Integração com WhatsApp\n* Landing page de divulgação comercial\n* Agente de IA ativo e monitorado 24h\n* Hospedagem e manutenção do chatbot\n* Suporte técnico via WhatsApp\n\nPlano Pro (mais popular)\nSetup: R$ 697,00\nMensalidade: R$ 147,00 com contrato minimo de 1 ano\nInclui tudo do Plano Básico, mais:\n* Integração com Google Agenda\n* Agente de IA para gestão de agenda\n* Landing page de divulgação e captura de leads\n\nBLOCO 4 — Fluxos de Atendimento\n\nA. Interessado em contratar um plano\nIdentifique o tipo de negócio e o que a pessoa espera do agente de IA.\nSugira o plano mais adequado (Básico ou Pro).\nExplique as principais vantagens e funcionalidades.\nOfereça o link de contratação ou encaminhamento ao time comercial.\n\nExemplo de resposta:\n“Entendi. Para o seu tipo de negócio, o plano [Básico/Pro] é o mais indicado. Ele inclui [resumo breve das funções].\nPosso te enviar o link para contratação ou você prefere agendar uma demonstração com um humano?”\n\nB. Agendamento de demonstração\nPeça nome completo, nome do negócio e melhores dias/horários.\nInforme que a demonstração é feita via chamada online com um humano\nRegistre as informações e encaminhe internamente.\n\nExemplo de resposta:\n“Perfeito. Para agendar sua demonstração, preciso do seu nome completo, nome do negócio e o melhor horário.\nNosso time entrará em contato para confirmar o agendamento.”\n\nC. Suporte técnico\nPeça nome do cliente e plano contratado.\nSolicite a descrição do problema.\nOfereça orientações básicas se possível.\nEncaminhe para o suporte técnico humano se necessário, informando o prazo de resposta.\n\nExemplo de resposta: \"Entendido. Para registrar seu chamado corretamente, pode me confirmar, por favor:\n\nO nome da sua empresa (ou seu nome completo, se for um contato pessoal) Qual plano você tem contratado conosco (Básico ou Pro)\n\nE, por favor, descreva brevemente o problema que está acontecendo. Assim posso te ajudar ou encaminhar para o nosso tempo de suporte.”\n\nD. Reclamações\nAgradeça pelo feedback.\nPeça detalhes do ocorrido.\nRegistre a reclamação e informe que será analisada.\n\nExemplo de resposta:\n“Lamento saber que você teve essa experiência. Pode me contar o que aconteceu para que eu registre corretamente sua solicitação?\nO setor responsável analisará a situação e entrará em contato o mais breve possível.”\n\nE. Cancelamentos\nConfirme nome e plano contratado.\nPergunte se o cliente deseja cancelar ou apenas pausar o serviço.\nInforme que o cancelamento será encaminhado ao setor responsável.\n\nExemplo de resposta:\n“Certo. Para confirmar, você deseja cancelar definitivamente o serviço ou apenas pausar a cobrança por um período?\nO pedido será encaminhado ao setor responsável e você receberá uma confirmação assim que o cancelamento for concluído.”\n\nF. Pedido para falar com alguém\nPergunte o motivo do contato para direcionar corretamente.\nInforme que o atendimento humano será feito dentro do horário comercial.\nRegistre o contato (telefone ou e-mail).\n\nExemplo de resposta:\n“Claro. Para te direcionar corretamente, pode me dizer o motivo do contato? Assim encaminho para o responsável certo.\nNosso time humano faz atendimentos em horário comercial. Pode me confirmar seu telefone ou e-mail para retorno?”\n\n\nBLOCO 5 — Fallback e encerramento\n\nFallback (quando não entende a mensagem):\n“Desculpe, não entendi muito bem. Pode reformular sua pergunta ou selecionar uma das opções abaixo? Assim posso te ajudar da melhor forma.”\n\nEncerramento padrão:\n“Fico feliz em poder te ajudar. Caso precise de qualquer outra coisa, é só me chamar aqui mesmo.\nA IA Connect está sempre à disposição para apoiar seu negócio com tecnologia e atendimento inteligente.”\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        304,
+        -96
+      ],
+      "id": "92014549-8143-495c-902b-81ae88839362",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        176,
+        112
+      ],
+      "id": "f4afab5f-849e-40fc-9297-d2a70e583c56",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "66Ow8ncow3etMoQg",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Dados').item.json.session }} {{ $('Dados').item.json.from }} chats",
+        "contextWindowLength": 20
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        320,
+        112
+      ],
+      "id": "726b88a2-c5bc-4ae8-b306-d41834ef78f6",
+      "name": "Postgres Chat Memory",
+      "credentials": {
+        "postgres": {
+          "id": "W4YN8L6FqBaKXlgz",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "Chatting",
+        "operation": "Send Seen",
+        "session": "={{ $('Dados').item.json.session }}",
+        "chatId": "={{ $('Dados').item.json.from }}",
+        "messageId": "=",
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-waha.WAHA",
+      "typeVersion": 202411,
+      "position": [
+        608,
+        -96
+      ],
+      "id": "37d4e8a9-b6ee-4a8b-a9d8-d42f8e314ccd",
+      "name": "Send Seen",
+      "credentials": {
+        "wahaApi": {
+          "id": "JWpB1mj2DX1RmGlQ",
+          "name": "WAHA account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "Chatting",
+        "operation": "Start Typing",
+        "session": "={{ $('Dados').item.json.session }}",
+        "chatId": "={{ $('Dados').item.json.from }}",
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-waha.WAHA",
+      "typeVersion": 202411,
+      "position": [
+        784,
+        -96
+      ],
+      "id": "7d7c5f92-af0d-4ba5-a317-e40953aa77ba",
+      "name": "Start Typing",
+      "credentials": {
+        "wahaApi": {
+          "id": "JWpB1mj2DX1RmGlQ",
+          "name": "WAHA account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        944,
+        -96
+      ],
+      "id": "21217a18-391c-40f5-bd90-fc44dca981cc",
+      "name": "Wait",
+      "webhookId": "ab00c8a7-2aaa-4dbe-bf31-37380fa94c79"
+    },
+    {
+      "parameters": {
+        "resource": "Chatting",
+        "operation": "Send Text",
+        "session": "={{ $('Dados').item.json.session }}",
+        "chatId": "={{ $('Dados').item.json.from }}",
+        "text": "={{ $('AI Agent').item.json.output }}",
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-waha.WAHA",
+      "typeVersion": 202411,
+      "position": [
+        1104,
+        -96
+      ],
+      "id": "2332fc45-23b4-480e-818b-2dd0757ea43c",
+      "name": "Send a text message",
+      "credentials": {
+        "wahaApi": {
+          "id": "JWpB1mj2DX1RmGlQ",
+          "name": "WAHA account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Dados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dados": {
+      "main": [
+        [
+          {
+            "node": "Ignorar API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ignorar API": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Ignorar grupos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ignorar grupos": {
+      "main": [
+        [],
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "No Operation, do nothing": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send Seen",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Seen": {
+      "main": [
+        [
+          {
+            "node": "Start Typing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Start Typing": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "70de69ce-a4bd-41ea-94f9-3817ac0e64ec",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "460efee84deaa806061dcd84c456c2499dddae43937fc781a4d1fa4729bb1fad"
+  },
+  "id": "nl6UtvIj6ZLFNNII",
+  "tags": []
+}
